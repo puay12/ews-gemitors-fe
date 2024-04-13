@@ -2,10 +2,9 @@ import { ChangeEventHandler, FormEvent, useState } from "react";
 import axios from 'axios';
 import "./add_update_data.scss";
 
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { baseUrl } from "../../../../../core/config";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Snackbar, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const AddUpdateData = () => {
@@ -38,7 +37,7 @@ export const AddUpdateData = () => {
 
     const action = (
         <Link to={'/patient/records/add'}>
-            <Button size="sm">
+            <Button size="small" color="inherit" variant="outlined">
                 Lanjut
             </Button>
         </Link>

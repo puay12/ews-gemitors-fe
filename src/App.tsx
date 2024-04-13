@@ -53,7 +53,7 @@ function App() {
           element: <AddUpdateRecord />,
         },
         {
-          path: "/patient/ews/result/:id",
+          path: "/patient/ews/result",
           element: <EWSResult />,
         },
         // EWS TABLE

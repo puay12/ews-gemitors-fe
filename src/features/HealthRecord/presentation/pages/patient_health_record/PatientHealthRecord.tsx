@@ -49,6 +49,10 @@ export const PatientHealthRecord = () => {
         sessionStorage.setItem("patientId", id ?? '');
     }
 
+    const handleToResult = (record_id:string) => {
+        sessionStorage.setItem('recordId', record_id);
+    }
+
     const columnHelper = createColumnHelper<Record>()
 
     const columns = [
@@ -103,7 +107,7 @@ export const PatientHealthRecord = () => {
         columnHelper.accessor(row => row.id, {
             id: 'id',
             cell: info => (
-                <Link to={`/patient/ews/result/${info.getValue()}`}>
+                <Link to={`/patient/ews/result`}>
                     <button className='btn btn-success ms-3'>
                         Lihat
                     </button>

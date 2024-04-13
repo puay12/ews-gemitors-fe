@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import "./ews_result.scss";
 import { baseUrl } from "../../../../../core/config";
+import { Button as BSButton } from 'react-bootstrap';
+import { Alert, Snackbar, Button } from "@mui/material";
 
 interface Score {
     id: number
@@ -19,22 +21,58 @@ interface Score {
 }
 
 export const EWSResult = () => {
-    const { id } = useParams();
-    const [data, setData] = useState<Score[]>([]);
+    const [data, setData] = useState<Score>();
     const [loading, setLoading] = useState(true);
-    const isToBeSaved = sessionStorage.getItem('isToBeSaved');
+    const [open, setOpen] = useState(false);
+    
+    const id = sessionStorage.getItem('recordId');
+    const scores = JSON.parse(sessionStorage.getItem('scores') ?? '');
 
     useEffect(() => {
-        axios.get(`${baseUrl}/patients/score/detail/${id}`)
-            .then((res) => {
-                setData(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+        if (scores != '') {
+            setData(scores);
+        } else {
+            axios.get(`${baseUrl}/patients/score/detail/${id}`)
+                .then((res) => {
+                    setData(res.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        setLoading(false);
     }, []);
+
+    const handleOnClick = async (e:any) => {
+        e.preventDefault();
+        setLoading(true);
+
+        axios.post(`${baseUrl}/patients/score/add`, {
+            record_id: id,
+            heart_score: data?.heart_score,
+            sys_score: data?.sys_score,
+            dias_score: data?.dias_score,
+            respiratory_score: data?.respiratory_score,
+            temp_score: data?.temp_score,
+            spo2_score: data?.spo2_score,
+            ews_score: data?.ews_score
+        })
+            .then((res) => {
+                setOpen(true);
+                setLoading(false);
+                sessionStorage.setItem('scores', '');
+            })
+            .catch((err) => console.log(err));
+    }
+
+    const action = (
+        <Link to='/'>
+            <Button size="small" color="inherit" variant="outlined">
+                Ok
+            </Button>
+        </Link>
+    );
 
     return (
         <div className="p-3">
@@ -43,10 +81,8 @@ export const EWSResult = () => {
                     <div className="title">Skor EWS Paisen :</div>
                     <div className="score">
                         {loading 
-                            ? <h1>...</h1> 
-                            : data.map((obj) => {
-                                return obj.ews_score
-                            })}
+                            ? <h1>...</h1>
+                            : data?.ews_score}
                     </div>
                 </div>
                 <div className="detail">
@@ -101,34 +137,22 @@ export const EWSResult = () => {
                     </div>
                     <div className="col-sm-2">
                         <div>
-                            {data.map((obj) => {
-                                return obj.heart_score
-                            })}
+                            {data?.heart_score}
                         </div>
                         <div>
-                            {data.map((obj) => {
-                                return obj.respiratory_score
-                            })}
+                            {data?.respiratory_score}
                         </div>
                         <div>
-                            {data.map((obj) => {
-                                return obj.spo2_score
-                            })}
+                            {data?.spo2_score}
                         </div>
                         <div>
-                            {data.map((obj) => {
-                                return obj.sys_score
-                            })}
+                            {data?.sys_score}
                         </div>
                         <div>
-                            {data.map((obj) => {
-                                return obj.dias_score
-                            })}
+                            {data?.dias_score}
                         </div>
                         <div>
-                            {data.map((obj) => {
-                                return obj.temp_score
-                            })}
+                            {data?.temp_score}
                         </div>
                     </div>
                 </div>
@@ -140,19 +164,35 @@ export const EWSResult = () => {
                     <div className="col-sm-3">Total Skor EWS</div>
                     <div className="col-sm-1">:</div>
                     <div className="col-sm-2">
-                        {data.map((obj) => {
-                            return obj.ews_score
-                        })}
+                        {data?.ews_score}
                     </div>
                 </div>
             </div>
-            <div className="button-wrap">
-                <div className="col-md-5">
-                    <Link to="/">
-                        <div className="btn custom-btn">Simpan Data</div>
-                    </Link>
-                </div>
-            </div>
+            {scores != ''
+                ?   <div className="button-wrap">
+                        <div className="col-md-5">
+                            <div className="btn custom-btn" onClick={handleOnClick}>Simpan Data</div>
+                        </div>
+                    </div>
+                : <div></div>
+            }
+            <Snackbar
+                open={open}
+                anchorOrigin={{ 
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                autoHideDuration={3000}
+            >
+                <Alert
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    action={action}
+                >
+                Berhasil menyimpan skor EWS pasien!
+                </Alert>
+            </Snackbar>
         </div>
     )
 }

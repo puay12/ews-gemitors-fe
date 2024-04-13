@@ -1,16 +1,11 @@
 import { useState } from "react";
-import {
-    PopupboxManager,
-    PopupboxContainer
-} from 'react-popupbox';
 import axios from 'axios';
 import "./add_update_record.scss";
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Form, Button as BSButton } from 'react-bootstrap';
 import { Link, useParams } from "react-router-dom";
 import { baseUrl, baseUrlEWS } from "../../../../../core/config";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Snackbar, Button } from "@mui/material";
 
 type EWSScore = {
     heart_score: string
@@ -45,15 +40,16 @@ export const AddUpdateRecord = () => {
         setLoading(true);
         axios.post(`${baseUrl}/patients/vsign/add`, data)
             .then((res) => {
-                setOpen(true);
-                setLoading(false);
                 sessionStorage.setItem('recordId', res.data.record_id);
+                handleCalculateEWS(e);
             })
             .catch((err) => console.log(err));
     };
 
-    const handleCalculateEWS = async (e:any) => {
+    async function handleCalculateEWS(e:any) {
         e.preventDefault();
+        setLoading(true);
+
         axios.post(`${baseUrlEWS}/getEWSScore`, {
             heart_rate: data.heart_rate,
             systolic_blood_pressure: data.systolic_blood_pressure,
@@ -62,15 +58,19 @@ export const AddUpdateRecord = () => {
             temperature: data.temperature,
             spo2: data.spo2
         }).then((res) => {
-                sessionStorage.setItem('scores', JSON.stringify(res.data));
+                sessionStorage.setItem('scores', JSON.stringify(res.data['data']));
+                setOpen(true);
+                setLoading(false);
             })
-            .catch(err => console.log(err));
+            .catch((err) => console.log(err));
     };
 
     const action = (
-        <Button size="sm" onClick={handleCalculateEWS}>
-            Hitung Skor EWS
-        </Button>
+        <Link to='/patient/ews/result'>
+            <Button size="small" color="inherit" variant="outlined">
+                Lihat Skor
+            </Button>
+        </Link>
     );
 
     return (
@@ -108,12 +108,12 @@ export const AddUpdateRecord = () => {
                     </div>
                 </div>
                 {loading
-                    ?   <Button className="btn btn-success mt-4">
+                    ?   <BSButton className="btn btn-success mt-4">
                             ...
-                        </Button>
-                    :   <Button type="submit" className="btn btn-success mt-4">
-                            Submit
-                        </Button>
+                        </BSButton>
+                    :   <BSButton type="submit" className="btn btn-success mt-4">
+                            Submit dan Hitung EWS
+                        </BSButton>
                 }
             </Form>
 
@@ -131,7 +131,7 @@ export const AddUpdateRecord = () => {
                     sx={{ width: '100%' }}
                     action={action}
                 >
-                Berhasil menambahkan tanda vital pasien!
+                Berhasil menambahkan tanda vital pasien dan menghitung skor EWS!
                 </Alert>
             </Snackbar>
         </div>
