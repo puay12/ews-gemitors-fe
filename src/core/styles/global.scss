@@ -1,0 +1,47 @@
+@import "./variables.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.main{
+  font-family: "Open Sans", sans-serif;
+  background-color: $main-bg;
+  color: $text-dark;
+  font-weight: $regular;
+  height: 100vh;
+}
+
+.sidebar-container{
+  width: 230px;
+  height: 100%;
+  background-color: $secondary-bg;
+  position: fixed;
+  overflow: auto;
+}
+
+.content-container{
+  width: 100%;
+  margin-left: 230px;
+}
+
+/* On screens that are less than 700px wide, make the sidebar into a topbar */
+@media screen and (max-width: 700px) {
+  .sidebar-container {
+    width: 50%;
+    height: auto;
+    position: relative;
+  }
+
+  div.content-container{
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,137 @@
+@import "../../../../../core/styles/variables.scss";
+
+.ews-result{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .title{
+        font-size: 20px;
+        font-weight: $bold;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .score{
+        border-radius: 50%;
+        background-color: $primary;
+        width: 150px;
+        height: 150px;
+        font-size: 50px;
+        color: $text-light;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail{
+        margin-top: 16px;
+        padding: 32px;
+        border: 1px solid $primary;
+        border-radius: 8px;
+        width: 100%;
+
+        .info{
+            margin-bottom: 12px;
+    
+            .info-item, .semicolon, .info-value, li{
+                font-size: 14px;
+            }
+    
+            .info-item{
+                font-weight: $semi-bold;
+            }
+    
+            .semicolon{
+                margin-left: 12px;
+            }
+    
+            .info-value{
+                margin-left: 12px;
+            }
+        }
+    }
+}
+
+.result-detail{
+    padding-left: 0;
+
+    .title{
+        font-size: 20px;
+        font-weight: $bold;
+        margin-bottom: 12px;
+    }
+
+    .item{
+        font-weight: $bold;
+    }
+
+    .item-value{
+        margin-left: 12px;
+        margin-bottom: 10px;
+    }
+
+    .formula{
+        border: 1px solid $primary;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 14px;
+        width: 80%;
+
+        .title{
+            text-align: start;
+            font-size: 14px;
+        }
+    }
+
+    .detail-score{
+        font-size: 14px;
+    }
+
+    .score-total{
+        font-weight: $bold;
+        font-size: 16px;
+    }
+
+    hr{
+        width: 50%;
+        color: $gray;
+        border-bottom: 2px solid $gray;
+    }
+
+    .plus{
+        font-size: 18px;
+        font-weight: $bold;
+        color: $gray;
+    }
+}
+
+.button-wrap{
+    width: 100%; 
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .custom-btn{
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: $primary;
+        border: $primary 1px solid;
+        border-radius: 8px;
+        color: $text-light;
+        font-weight: $semi-bold; 
+        font-size: 13px;
+
+        &:hover{
+            background-color: $main-bg;
+            color: $primary;
+        }
+
+        &:active{
+            box-shadow: 2px 3px $light-gray;
+        }
+    }
+}

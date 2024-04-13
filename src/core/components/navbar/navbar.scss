@@ -1,0 +1,17 @@
+@import "../../styles/variables.scss";
+
+.navbar{
+    width: 100%;
+    padding: 0;
+
+    .user{
+        font-weight: $semi-bold;
+
+        img{
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            margin-right: 8px;
+        }
+    }
+}

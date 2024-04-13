@@ -1,0 +1,76 @@
+@import "../../../../../core/styles/variables.scss";
+
+.home{
+    .title{
+        font-size: 20px;
+        font-weight: $bold;
+    }
+
+    .panels{
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .search{
+            border: 1px solid $gray;
+            border-radius: 8px;
+            width: 30%;
+            display: flex;
+            align-items: center;
+
+            svg{
+                margin-right: 8px;
+                width: 20px;
+                height: 20px;
+            }
+
+            .search-input{
+                border: none;
+            }
+        }
+
+        .add-btn{
+            background-color: $primary;
+            border-radius: 8px;
+            border: $primary 1px solid;
+            
+            span{
+                color: $text-light;
+                margin-left: 8px;
+                font-weight: $semi-bold;
+            }
+
+            &:hover{
+                background-color: $main-bg;
+                
+                svg{
+                    path{
+                        stroke: $primary;
+                    }
+                }
+
+                span{
+                    color: $primary;
+                }
+
+                
+            }
+
+            &:active{
+                box-shadow: 2px 3px $light-gray;
+                transform: translateY(3px);
+            }
+        }
+    }
+
+    .data-table{
+        table, th, td{
+            border: 1px solid $light-gray;
+        }
+    }
+
+    .coba{
+        background-color: $primary;
+        height: 80vh;
+    }
+}

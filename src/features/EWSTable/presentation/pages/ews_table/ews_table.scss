@@ -1,0 +1,28 @@
+@import "../../../../../core/styles/variables.scss";
+
+.ews-table{
+    .title{
+        font-size: 20px;
+        font-weight: $bold;
+    }
+
+    span{
+        font-size: $semi-bold;
+    }
+
+    .vsign-table{
+        table, th, td{
+            border: 1px solid $light-gray;
+        }
+    }
+
+    .footer-sticker{
+        position: absolute;
+        bottom: 15%;
+        left: 35%;
+
+        img{
+            height: 60px;
+        }
+    }
+}

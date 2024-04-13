@@ -1,0 +1,39 @@
+@import "../../../../../core/styles/variables.scss";
+
+.add_update_record{
+    margin-top: 12px;
+
+    .title{
+        font-size: 20px;
+        font-weight: $bold;
+    }
+
+    .label{
+        font-weight: $bold;
+        font-size: 13px;
+    }
+
+    .btn-success{
+        width: 25%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: $primary;
+        border: $primary 1px solid;
+        border-radius: 8px;
+        color: $text-light;
+        font-weight: $semi-bold;
+        position: absolute;
+        left: 50%;
+        -ms-transform: translate(-30%);
+        transform: translate(-30%); 
+
+        &:hover{
+            background-color: $main-bg;
+            color: $primary;
+        }
+
+        &:active{
+            box-shadow: 2px 3px $light-gray;
+        }
+    }
+}
