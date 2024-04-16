@@ -26,12 +26,16 @@ export const EWSResult = () => {
     
     const recordId = sessionStorage.getItem('recordId');
     const patientId = sessionStorage.getItem('patientId');
-    const scores = JSON.parse(sessionStorage.getItem('scores') ?? '');
+    const scores = JSON.parse(sessionStorage.getItem('scores')!) ?? JSON.stringify('');
+
+    console.log(recordId);
 
     useEffect(() => {
         if (scores != '') {
+            console.log('woi');
             setData([scores]);
         } else {
+            console.log('halo');
             axios.get(`${baseUrl}/patients/score/detail/${recordId}`)
                 .then((res) => {
                     setData(res.data);
@@ -43,6 +47,8 @@ export const EWSResult = () => {
 
         setLoading(false);
     }, []);
+
+    console.log(data);
 
     const handleOnClick = async (e:any) => {
         e.preventDefault();

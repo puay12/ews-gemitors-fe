@@ -2,7 +2,7 @@ import { ChangeEventHandler, FormEvent, useState } from "react";
 import axios from 'axios';
 import "./add_update_data.scss";
 
-import Form from 'react-bootstrap/Form';
+import { Form, Button as BsButton} from 'react-bootstrap';
 import { baseUrl } from "../../../../../core/config";
 import { Alert, Snackbar, Button } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -84,12 +84,12 @@ export const AddUpdateData = () => {
                     </div>
                 </div>
                 {loading
-                    ?   <Button className="btn btn-success mt-4">
+                    ?   <BsButton className="btn btn-success mt-4">
                             ...
-                        </Button>
-                    :   <Button type="submit" className="btn btn-success mt-4">
+                        </BsButton>
+                    :   <BsButton type="submit" className="btn btn-success mt-4">
                             Submit
-                        </Button>
+                        </BsButton>
                 }
             </Form>
             <Snackbar

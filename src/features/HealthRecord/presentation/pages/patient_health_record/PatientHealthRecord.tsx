@@ -43,10 +43,12 @@ export const PatientHealthRecord = () => {
                 console.log(err);
                 setLoading(false);
             });
+        
+        sessionStorage.setItem('scores', JSON.stringify(''));
     }, []);
 
     const handleAddVsign = () => {
-        sessionStorage.setItem("patientId", id ?? '');
+        sessionStorage.setItem('patientId', id ?? '');
     }
 
     const handleToResult = (e:any) => {
