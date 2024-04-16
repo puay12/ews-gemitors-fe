@@ -11,8 +11,18 @@
     }
 
     .protocol-table{
-        table, th, td{
-            border: 1px solid $light-gray;
+        table{
+            th{
+                background-color: $secondary-bg;
+                vertical-align: middle;
+            }
+    
+            tr{
+                vertical-align: middle;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
         }
     }
 }

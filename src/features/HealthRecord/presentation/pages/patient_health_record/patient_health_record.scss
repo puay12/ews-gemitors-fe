@@ -63,14 +63,17 @@
         }
     }
 
-    .data-table{
-        table, th, td{
-            border: 1px solid $light-gray;
+    table{
+        th{
+            background-color: $secondary-bg;
+            vertical-align: middle;
         }
-    }
 
-    .coba{
-        background-color: $primary;
-        height: 80vh;
+        tr{
+            vertical-align: middle;
+            &:hover{
+                cursor: pointer;
+            }
+        }
     }
 }

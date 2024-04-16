@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./protocols.scss"
 import { baseUrl } from "../../../../../core/config";
 import axios from "axios";
@@ -13,11 +13,15 @@ import { Link } from "react-router-dom";
 
 type Protocol = {
     id: number
-    score_thres: string
-    risk_level: string
+    score_thres_id: number
+    risk_level_id: number
+    category_id: number
+    monitor_freq_id: number
+    threshold: string
+    level: string
     category: string
-    monitor_freq: string
-    protocols: string
+    frequency: string
+    protocol_list: string
 }
 
 export const ProtocolLists = () => {
@@ -29,7 +33,7 @@ export const ProtocolLists = () => {
     });
 
     useEffect(() => {
-        axios.get(`${baseUrl}/patients/vsign/all`)
+        axios.get(`${baseUrl}/protocol/all`)
             .then((res) => {
                 setData(res.data);
                 setLoading(false);
@@ -39,6 +43,17 @@ export const ProtocolLists = () => {
                 setLoading(false);
             });
     }, []);
+
+    function TextWithLineBreaks(props:any) {
+        const textWithBreaks = props.text.split('\\n').map((text:any, index:any) => (
+            <React.Fragment key={index}>
+                {text}
+                <br />
+            </React.Fragment>
+        ));
+    
+        return <div>{textWithBreaks}</div>;
+    }
 
     const columnHelper = createColumnHelper<Protocol>();
 
@@ -51,33 +66,30 @@ export const ProtocolLists = () => {
             header: () => 'No.',
             size: 40
         }),
-        columnHelper.accessor(row => row.score_thres, {
-            id: 'score_thres',
+        columnHelper.accessor(row => row.threshold, {
+            id: 'threshold',
             header: () => 'Acuan Skor EWS',
         }),
-        columnHelper.accessor(row => row.risk_level, {
-            id: 'risk_level',
+        columnHelper.accessor(row => row.level, {
+            id: 'level',
             cell: info => <i>{info.getValue()}</i>,
             header: () => 'Tingkat Risiko',
-            size: 100
         }),
         columnHelper.accessor(row => row.category, {
             id: 'category',
             cell: info => <i>{info.getValue()}</i>,
             header: () => 'Kategori Protokol',
-            size: 100
         }),
-        columnHelper.accessor(row => row.monitor_freq, {
-            id: 'monitor_freq',
+        columnHelper.accessor(row => row.frequency, {
+            id: 'frequency',
             cell: info => <i>{info.getValue()}</i>,
             header: () => 'Frekuensi Monitoring',
-            size: 100
         }),
-        columnHelper.accessor(row => row.protocols, {
-            id: 'protocols',
-            cell: info => <i>{info.getValue()}</i>,
+        columnHelper.accessor(row => row.protocol_list, {
+            id: 'protocol_list',
+            cell: info => <TextWithLineBreaks text={info.getValue()} />,
             header: () => 'Daftar Protokol',
-            size: 100
+            size: 400
         }),
     ];
 
@@ -95,7 +107,7 @@ export const ProtocolLists = () => {
     return (
         <div className="protocols">
             <div className="title mb-3">Daftar Protokol</div>
-            <span>Protokol yang ada dapat disesuaikan dengan perubahan standar yang ada.</span>
+            <span>Daftar protokol berikut dapat disesuaikan dengan perubahan standar yang ada.</span>
             {/* TABEL PROTOKOL */}
             <div className="protocol-table mt-4">
             {loading 
@@ -159,6 +171,64 @@ export const ProtocolLists = () => {
                             ))}
                         </tbody>
                     </BsTable>}
+            </div>
+            <div className="d-flex align-items-center justify-content-center">
+                <div className='d-flex align-items-center gap-2'>
+                    <button
+                        className="btn btn-success p-2"
+                        onClick={() => table.firstPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >{'<<'}</button>
+                    <button
+                        className="btn btn-success p-2"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >{'<'}</button>
+                    <button
+                        className="btn btn-success p-2"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                    >{'>'}</button>
+                    <button
+                        className="btn btn-success p-2"
+                        onClick={() => table.lastPage()}
+                        disabled={!table.getCanNextPage()}
+                    >{'>>'}</button>
+                </div>
+                <span className="d-flex align-items-center gap-2 ms-2">
+                    <div>Page</div>
+                    <strong>
+                        {table.getState().pagination.pageIndex + 1}
+                    </strong>
+                    <span>
+                    of{' '} {table.getPageCount().toLocaleString()}
+                    </span>
+                </span>
+                <span className="flex items-center gap-2 ms-2">
+                    | Go to page: 
+                    <input
+                        type="number"
+                        defaultValue={table.getState().pagination.pageIndex + 1}
+                        onChange={e => {
+                        const page = e.target.value ? Number(e.target.value) - 1 : 0
+                        table.setPageIndex(page)
+                        }}
+                        className="border p-1 rounded w-16 ms-3"
+                    />
+                </span>
+                <select
+                    value={table.getState().pagination.pageSize}
+                    onChange={e => {
+                        table.setPageSize(Number(e.target.value))
+                    }}
+                    className='ms-3 btn btn-success'
+                >
+                    {[10, 20, 30, 40, 50].map(pageSize => (
+                        <option key={pageSize} value={pageSize}>
+                            Show {pageSize}
+                        </option>
+                    ))}
+                </select>
             </div>
         </div>
     )
