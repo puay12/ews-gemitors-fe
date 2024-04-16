@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import "./ews_result.scss";
 import { baseUrl } from "../../../../../core/config";
-import { Button as BSButton } from 'react-bootstrap';
 import { Alert, Snackbar, Button } from "@mui/material";
 
 interface Score {
@@ -21,18 +20,19 @@ interface Score {
 }
 
 export const EWSResult = () => {
-    const [data, setData] = useState<Score>();
+    const [data, setData] = useState<Score[]>([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
     
-    const id = sessionStorage.getItem('recordId');
+    const recordId = sessionStorage.getItem('recordId');
+    const patientId = sessionStorage.getItem('patientId');
     const scores = JSON.parse(sessionStorage.getItem('scores') ?? '');
 
     useEffect(() => {
         if (scores != '') {
-            setData(scores);
+            setData([scores]);
         } else {
-            axios.get(`${baseUrl}/patients/score/detail/${id}`)
+            axios.get(`${baseUrl}/patients/score/detail/${recordId}`)
                 .then((res) => {
                     setData(res.data);
                 })
@@ -47,27 +47,27 @@ export const EWSResult = () => {
     const handleOnClick = async (e:any) => {
         e.preventDefault();
         setLoading(true);
-
+        
         axios.post(`${baseUrl}/patients/score/add`, {
-            record_id: id,
-            heart_score: data?.heart_score,
-            sys_score: data?.sys_score,
-            dias_score: data?.dias_score,
-            respiratory_score: data?.respiratory_score,
-            temp_score: data?.temp_score,
-            spo2_score: data?.spo2_score,
-            ews_score: data?.ews_score
+            record_id: recordId,
+            heart_score: data.map((obj) => {return obj.heart_score}).pop(),
+            sys_score: data.map((obj) => {return obj.sys_score[0]}).pop(),
+            dias_score: data.map((obj) => {return obj.dias_score[0]}).pop(),
+            respiratory_score: data.map((obj) => {return obj.respiratory_score}).pop(),
+            temp_score: data.map((obj) => {return obj.temp_score}).pop(),
+            spo2_score: data.map((obj) => {return obj.spo2_score}).pop(),
+            ews_score: data.map((obj) => {return obj.ews_score}).pop()
         })
             .then((res) => {
-                setOpen(true);
                 setLoading(false);
-                sessionStorage.setItem('scores', '');
+                sessionStorage.setItem('scores', JSON.stringify(''));
+                setOpen(true);
             })
             .catch((err) => console.log(err));
     }
 
     const action = (
-        <Link to='/'>
+        <Link to={`/patient/records/${patientId}`}>
             <Button size="small" color="inherit" variant="outlined">
                 Ok
             </Button>
@@ -82,7 +82,7 @@ export const EWSResult = () => {
                     <div className="score">
                         {loading 
                             ? <h1>...</h1>
-                            : data?.ews_score}
+                            : data.map((obj) => {return obj.ews_score})}
                     </div>
                 </div>
                 <div className="detail">
@@ -137,22 +137,34 @@ export const EWSResult = () => {
                     </div>
                     <div className="col-sm-2">
                         <div>
-                            {data?.heart_score}
+                            {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.heart_score})}
                         </div>
                         <div>
-                            {data?.respiratory_score}
+                        {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.respiratory_score})}
                         </div>
                         <div>
-                            {data?.spo2_score}
+                        {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.spo2_score})}
                         </div>
                         <div>
-                            {data?.sys_score}
+                        {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.sys_score})}
                         </div>
                         <div>
-                            {data?.dias_score}
+                        {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.dias_score})}
                         </div>
                         <div>
-                            {data?.temp_score}
+                        {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.temp_score})}
                         </div>
                     </div>
                 </div>
@@ -164,17 +176,21 @@ export const EWSResult = () => {
                     <div className="col-sm-3">Total Skor EWS</div>
                     <div className="col-sm-1">:</div>
                     <div className="col-sm-2">
-                        {data?.ews_score}
+                    {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.ews_score})}
                     </div>
                 </div>
             </div>
             {scores != ''
                 ?   <div className="button-wrap">
                         <div className="col-md-5">
-                            <div className="btn custom-btn" onClick={handleOnClick}>Simpan Data</div>
+                            <div className="btn custom-btn" onClick={handleOnClick}>
+                                {loading ? '...' : 'Simpan Data'}
+                            </div>
                         </div>
                     </div>
-                : <div></div>
+                :   <div className="mb-5"></div>
             }
             <Snackbar
                 open={open}

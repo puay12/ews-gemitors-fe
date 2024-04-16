@@ -41,6 +41,7 @@ export const AddUpdateRecord = () => {
         axios.post(`${baseUrl}/patients/vsign/add`, data)
             .then((res) => {
                 sessionStorage.setItem('recordId', res.data.record_id);
+                sessionStorage.setItem('patientId', patientId ?? '');
                 handleCalculateEWS(e);
             })
             .catch((err) => console.log(err));

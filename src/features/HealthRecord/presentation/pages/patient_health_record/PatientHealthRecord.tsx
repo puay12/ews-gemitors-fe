@@ -8,7 +8,7 @@ import {
     getPaginationRowModel,
     useReactTable,
 } from '@tanstack/react-table';
-import { Table as BsTable } from 'react-bootstrap'
+import { Table as BsTable } from 'react-bootstrap';
 import "./patient_health_record.scss";
 import { baseUrl } from '../../../../../core/config';
 
@@ -45,12 +45,12 @@ export const PatientHealthRecord = () => {
             });
     }, []);
 
-    const handleOnClick = () => {
+    const handleAddVsign = () => {
         sessionStorage.setItem("patientId", id ?? '');
     }
 
-    const handleToResult = (record_id:string) => {
-        sessionStorage.setItem('recordId', record_id);
+    const handleToResult = (e:any) => {
+        sessionStorage.setItem('recordId', e.currentTarget.getAttribute('value'));
     }
 
     const columnHelper = createColumnHelper<Record>()
@@ -108,7 +108,7 @@ export const PatientHealthRecord = () => {
             id: 'id',
             cell: info => (
                 <Link to={`/patient/ews/result`}>
-                    <button className='btn btn-success ms-3'>
+                    <button className='btn btn-success ms-3' onClick={handleToResult} value={info.getValue()}>
                         Lihat
                     </button>
                 </Link>
@@ -136,7 +136,7 @@ export const PatientHealthRecord = () => {
                 </div>
                 <div className="col-md-6 d-flex justify-content-end">
                     <div className="panels">
-                        <Link to={`/patient/records/add/`} onClick={handleOnClick}>
+                        <Link to={`/patient/records/add/`} onClick={handleAddVsign}>
                             <div className="add-btn py-2 ps-2 pe-4">    
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
