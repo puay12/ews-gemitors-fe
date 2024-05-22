@@ -8,9 +8,10 @@ import EWSResult from './features/HealthRecord/presentation/pages/ews_result/EWS
 import Home from './features/PatientData/presentation/pages/home/Home';
 import EWSTablePage from './features/EWSTable/presentation/pages/ews_table/EWSTablePage';
 import ProtocolLists from './features/Protocols/presentation/pages/protocol_lists/ProtocolLists';
-import AddUpdateData from './features/PatientData/presentation/pages/add_update_data/AddUpdateData';
+import AddData from './features/PatientData/presentation/pages/add_data/AddData';
 import PatientHealthRecord from './features/HealthRecord/presentation/pages/patient_health_record/PatientHealthRecord';
 import AddUpdateRecord from './features/HealthRecord/presentation/pages/add_update_data/AddUpdateRecord';
+import UpdateData from './features/PatientData/presentation/pages/edit_data/UpdateData';
 
 function App() {
 
@@ -42,7 +43,11 @@ function App() {
         },
         {
           path: "/patient/add-data",
-          element: <AddUpdateData />,
+          element: <AddData />,
+        },
+        {
+          path: "/patient/update-data",
+          element: <UpdateData />,
         },
         {
           path: "/patient/records/:id",

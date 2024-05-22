@@ -1,13 +1,13 @@
-import { ChangeEventHandler, FormEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
-import "./add_update_data.scss";
+import "./add_data.scss";
 
 import { Form, Button as BsButton} from 'react-bootstrap';
 import { baseUrl } from "../../../../../core/config";
 import { Alert, Snackbar, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export const AddUpdateData = () => {
+export const AddData = () => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
@@ -26,6 +26,7 @@ export const AddUpdateData = () => {
     const handleSubmit = async (e:any) => {
         e.preventDefault();
         setLoading(true);
+
         axios.post(`${baseUrl}/patients/add`, data)
             .then((res) => {
                 setOpen(true);
@@ -44,16 +45,18 @@ export const AddUpdateData = () => {
     );
 
     return (
-        <div className="add_update_data">
+        <div className="add_data">
             <div className="title">Tambah Data Pasien</div>
             <Form 
                 onSubmit={handleSubmit}
+                method="POST"
             >
                 <div className="mt-4 row align-items-start justify-content-between">
                     <div className="col-md-6 pe-5">
                         <Form.Group className="mb-4" controlId="name">
                             <Form.Label className="label">Nama Pasien</Form.Label>
-                            <Form.Control type="text" placeholder="Jumiati" name="name" onChange={handleInput}/>
+                            <Form.Control type="text" placeholder="Jumiati" 
+                            name="name" onChange={handleInput} />
                         </Form.Group>
                         <Form.Group className="mb-4" controlId="gender">
                             <Form.Label className="label">Jenis Kelamin</Form.Label>
@@ -71,15 +74,18 @@ export const AddUpdateData = () => {
                     <div className="col-md-6 pe-5">
                     <Form.Group className="mb-4" controlId="height">
                             <Form.Label className="label">Tinggi Badan</Form.Label>
-                            <Form.Control type="number" name="height" onChange={handleInput} step=".01" placeholder="Gunakan tanda titik untuk menandakan bilangan desimal" />
+                            <Form.Control type="number" name="height" onChange={handleInput} step=".01" 
+                            placeholder="Gunakan tanda titik untuk menandakan bilangan desimal" />
                         </Form.Group>
                         <Form.Group className="mb-4" controlId="weight">
                             <Form.Label className="label">Berat Badan</Form.Label>
-                            <Form.Control type="number" name="weight" onChange={handleInput} placeholder="Gunakan tanda titik untuk menandakan bilangan desimal" />
+                            <Form.Control type="number" name="weight" onChange={handleInput} 
+                            placeholder="Gunakan tanda titik untuk menandakan bilangan desimal" />
                         </Form.Group>
                         <Form.Group className="mb-4" controlId="phone">
                             <Form.Label className="label">Nomor Telepon</Form.Label>
-                            <Form.Control type="number" name="phone" onChange={handleInput} placeholder="08xxxxxxxxxx"/>
+                            <Form.Control type="number" name="phone" onChange={handleInput} 
+                            placeholder="08xxxxxxxxxx" />
                         </Form.Group>
                     </div>
                 </div>
@@ -113,4 +119,4 @@ export const AddUpdateData = () => {
     )
 }
 
-export default AddUpdateData
+export default AddData

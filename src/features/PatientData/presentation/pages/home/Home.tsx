@@ -11,6 +11,7 @@ import {
 import { Table as BsTable } from 'react-bootstrap';
 import { baseUrl } from '../../../../../core/config';
 import "./home.scss";
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
 
 type Patient = {
     id: number
@@ -26,11 +27,15 @@ type Patient = {
 
 export const Home = () => {
     const [data, setData] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
         pageSize: 10, //default page size
     });
+
+    sessionStorage.setItem('patientId', '');
 
     useEffect(() => {
         axios.get(`${baseUrl}/patients/`)
@@ -102,6 +107,29 @@ export const Home = () => {
             ),
             header: () => 'Riwayat Kesehatan',
         }),
+        columnHelper.accessor(row => row.id, {
+            id: 'action',
+            cell: info => (
+                <div className='d-flex justify-content-around align-items-center'>
+                    <Link to={`/patient/update-data`}
+                        onClick={() => sessionStorage.setItem('patientId', info.getValue().toString())}>
+                        <button className='btn btn-primary ms-3'>
+                            <i className='fa fa-pencil-square-o me-2'></i>
+                            Edit
+                        </button>
+                    </Link>
+                    <button className='btn btn-danger ms-3' 
+                    onClick={() => {
+                        sessionStorage.setItem('patientId', info.getValue().toString());
+                        setOpenDialog(true);
+                    }}>
+                        <i className='fa fa-trash me-2'></i>
+                        Delete
+                    </button>
+                </div>
+            ),
+            header: () => 'Actions'
+        })
     ];
 
     const table = useReactTable({
@@ -116,6 +144,34 @@ export const Home = () => {
             pagination,
         },
     });
+
+    const handleDelete = async (e: any) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const id = sessionStorage.getItem('patientId');
+
+        axios.delete(`${baseUrl}/patients/delete/${id}`)
+            .then((res) => {
+                sessionStorage.setItem('patientId', '');
+                setOpen(true);
+                setOpenDialog(false);
+                setLoading(false);
+                window.location.reload();
+            })
+            .catch((err) => {
+                sessionStorage.setItem('patientId', '');
+                setLoading(false);
+                setOpenDialog(false);
+                console.log(err);
+            });
+    }
+
+    const action = (
+        <Button size="small" color="inherit" variant="outlined" onClick={() => setOpen(false)}>
+            Ok!
+        </Button>
+    );
 
     return (
         <div className="home">
@@ -237,6 +293,43 @@ export const Home = () => {
                     ))}
                 </select>
             </div>
+            <Snackbar
+                open={open}
+                anchorOrigin={{ 
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                autoHideDuration={3000}
+            >
+                <Alert
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    action={action}
+                >
+                Berhasil menghapus data pasien tesebut!
+                </Alert>
+            </Snackbar>
+            <Dialog
+                open={openDialog}
+                onClose={() => {setOpenDialog(false)}}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-title">
+                    {"Perhatian!"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Apakah Anda yakin ingin menghapus data pasien tersebut?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {setOpenDialog(false)}}>Cancel</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Ya
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
