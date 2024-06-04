@@ -37,9 +37,9 @@ export const AddData = () => {
     }
 
     const action = (
-        <Link to={'/patient/records/add'}>
+        <Link to={'/'}>
             <Button size="small" color="inherit" variant="outlined">
-                Lanjut
+                Ok
             </Button>
         </Link>
     );

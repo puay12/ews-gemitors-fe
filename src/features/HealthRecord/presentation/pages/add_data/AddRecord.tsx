@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
-import "./add_update_record.scss";
+import "./add_record.scss";
 
 import { Form, Button as BSButton } from 'react-bootstrap';
 import { Link, useParams } from "react-router-dom";
@@ -17,7 +17,7 @@ type EWSScore = {
     ews_score: string
 }
 
-export const AddUpdateRecord = () => {
+export const AddRecord = () => {
     const patientId = sessionStorage.getItem("patientId");
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -75,7 +75,7 @@ export const AddUpdateRecord = () => {
     );
 
     return (
-        <div className="add_update_record">
+        <div className="add_record">
             <div className="title">Tambah Tanda Vital Baru</div>
             <Form onSubmit={handleSubmit}>
                 <div className="mt-4 row align-items-start justify-content-between">
@@ -139,4 +139,4 @@ export const AddUpdateRecord = () => {
     )
 }
 
-export default AddUpdateRecord
+export default AddRecord

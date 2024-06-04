@@ -10,8 +10,10 @@ import EWSTablePage from './features/EWSTable/presentation/pages/ews_table/EWSTa
 import ProtocolLists from './features/Protocols/presentation/pages/protocol_lists/ProtocolLists';
 import AddData from './features/PatientData/presentation/pages/add_data/AddData';
 import PatientHealthRecord from './features/HealthRecord/presentation/pages/patient_health_record/PatientHealthRecord';
-import AddUpdateRecord from './features/HealthRecord/presentation/pages/add_update_data/AddUpdateRecord';
+import AddRecord from './features/HealthRecord/presentation/pages/add_data/AddRecord';
 import UpdateData from './features/PatientData/presentation/pages/edit_data/UpdateData';
+import UpdateRecord from './features/HealthRecord/presentation/pages/update_record/UpdateRecord';
+import UpdateScore from './features/HealthRecord/presentation/pages/update_score/UpdateScore';
 
 function App() {
 
@@ -55,11 +57,19 @@ function App() {
         },
         {
           path: "/patient/records/add",
-          element: <AddUpdateRecord />,
+          element: <AddRecord />,
+        },
+        {
+          path: "/patient/records/update",
+          element: <UpdateRecord />,
         },
         {
           path: "/patient/ews/result",
           element: <EWSResult />,
+        },
+        {
+          path: "/patient/ews/update",
+          element: <UpdateScore />,
         },
         // EWS TABLE
         {

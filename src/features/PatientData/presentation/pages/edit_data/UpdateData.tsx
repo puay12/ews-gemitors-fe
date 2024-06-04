@@ -4,12 +4,11 @@ import "./update_data.scss";
 
 import { Form, Button as BsButton} from 'react-bootstrap';
 import { baseUrl } from "../../../../../core/config";
-import { Alert, Snackbar, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const UpdateData = () => {
     const patientId = sessionStorage.getItem('patientId');
-    const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [initialData, setInitialData] = useState({
         name: '',
@@ -47,20 +46,13 @@ export const UpdateData = () => {
         
         axios.put(`${baseUrl}/patients/update/${patientId}`, data)
             .then((res) => {
-                setOpen(true);
                 setLoading(false);
                 sessionStorage.setItem('patientId', '');
+                sessionStorage.setItem('isPatientUpdated', 'true');
+                navigate('/');
             })
             .catch((err) => console.log(err));
     }
-
-    const action = (
-        <Link to={'/'}>
-            <Button size="small" color="inherit" variant="outlined">
-                Ok
-            </Button>
-        </Link>
-    );
 
     function checkInput() {
         if(data.name == '') {
@@ -140,23 +132,6 @@ export const UpdateData = () => {
                         </BsButton>
                 }
             </Form>
-            <Snackbar
-                open={open}
-                anchorOrigin={{ 
-                    vertical: 'top',
-                    horizontal: 'center'
-                }}
-                autoHideDuration={3000}
-            >
-                <Alert
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                    action={action}
-                >
-                Berhasil mengupdate data pasien!
-                </Alert>
-            </Snackbar>
         </div>
     )
 }

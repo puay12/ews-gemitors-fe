@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./ews_result.scss";
 import { baseUrl } from "../../../../../core/config";
 import { Alert, Snackbar, Button } from "@mui/material";
@@ -23,19 +23,18 @@ export const EWSResult = () => {
     const [data, setData] = useState<Score[]>([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
-    
+    const [openUpdt, setOpenUpdt] = useState(false);
+    const [openScoreUpdt, setOpenScoreUpdt] = useState(false);
+
     const recordId = sessionStorage.getItem('recordId');
     const patientId = sessionStorage.getItem('patientId');
+    const navigate = useNavigate();
     const scores = JSON.parse(sessionStorage.getItem('scores')!) ?? JSON.stringify('');
-
-    console.log(recordId);
 
     useEffect(() => {
         if (scores != '') {
-            console.log('woi');
             setData([scores]);
         } else {
-            console.log('halo');
             axios.get(`${baseUrl}/patients/score/detail/${recordId}`)
                 .then((res) => {
                     setData(res.data);
@@ -46,9 +45,18 @@ export const EWSResult = () => {
         }
 
         setLoading(false);
-    }, []);
 
-    console.log(data);
+        if((sessionStorage.getItem('isRecordUpdated') != '') &&
+            (sessionStorage.getItem('isRecordUpdated') != null)) {
+            setOpenUpdt(true);
+            sessionStorage.setItem('isRecordUpdated', '');
+        }
+        if((sessionStorage.getItem('isScoreUpdated') != '') &&
+            (sessionStorage.getItem('isScoreUpdated') != null)) {
+            setOpenScoreUpdt(true);
+            sessionStorage.setItem('isScoreUpdated', '');
+        }
+    }, []);
 
     const handleOnClick = async (e:any) => {
         e.preventDefault();
@@ -72,6 +80,10 @@ export const EWSResult = () => {
             .catch((err) => console.log(err));
     }
 
+    const handleEditScore = () => {
+        navigate('/patient/ews/update');
+    }
+
     const action = (
         <Link to={`/patient/records/${patientId}`}>
             <Button size="small" color="inherit" variant="outlined">
@@ -83,6 +95,15 @@ export const EWSResult = () => {
     return (
         <div className="p-3">
             <div className="ews-result">
+                {scores != ''
+                    ?   <div className="container d-flex align-items-center justify-content-end mt-3">
+                            <button className="btn btn-primary" onClick={handleEditScore}>
+                                    <i className='fa fa-pencil-square-o me-2'></i>
+                                    Edit
+                            </button>
+                        </div>
+                    :   <div></div>
+                }
                 <div className="d-flex flex-column align-items-center justify-content-center">
                     <div className="title">Skor EWS Paisen :</div>
                     <div className="score">
@@ -213,6 +234,40 @@ export const EWSResult = () => {
                     action={action}
                 >
                 Berhasil menyimpan skor EWS pasien!
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={openUpdt}
+                anchorOrigin={{ 
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                autoHideDuration={3000}
+                onClose={() => setOpenUpdt(false)}
+            >
+                <Alert
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                Berhasil menambahkan tanda vital pasien dan menghitung skor EWS!
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={openScoreUpdt}
+                anchorOrigin={{ 
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                autoHideDuration={3000}
+                onClose={() => setOpenScoreUpdt(false)}
+            >
+                <Alert
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                Berhasil mengupdate skor EWS!
                 </Alert>
             </Snackbar>
         </div>

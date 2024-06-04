@@ -27,15 +27,12 @@ type Patient = {
 
 export const Home = () => {
     const [data, setData] = useState([]);
-    const [open, setOpen] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openUpdtSnackbar, setOpenUpdt] = useState(false);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
         pageSize: 10, //default page size
     });
-
-    sessionStorage.setItem('patientId', '');
 
     useEffect(() => {
         axios.get(`${baseUrl}/patients/`)
@@ -47,6 +44,14 @@ export const Home = () => {
                 console.log(err);
                 setLoading(false);
             });
+
+        if((sessionStorage.getItem('isPatientUpdated') != '') &&
+            (sessionStorage.getItem('isPatientUpdated') != null)) {
+            setOpenUpdt(true);
+            sessionStorage.setItem('isPatientUpdated', '');
+        }
+
+        sessionStorage.setItem('patientId', '');
     }, []);
 
     // TABLE CONFIGS
@@ -99,8 +104,10 @@ export const Home = () => {
         columnHelper.accessor(row => row.id, {
             id: 'id',
             cell: info => (
-                <Link to={`/patient/records/${info.getValue()}`}>
+                <Link to={`/patient/records/${info.getValue()}`} 
+                        className='d-flex align-items-center justify-content-center'>
                     <button className='btn btn-success ms-3'>
+                        <i className='fa fa-eye me-2'></i>
                         Lihat
                     </button>
                 </Link>
@@ -110,25 +117,16 @@ export const Home = () => {
         columnHelper.accessor(row => row.id, {
             id: 'action',
             cell: info => (
-                <div className='d-flex justify-content-around align-items-center'>
-                    <Link to={`/patient/update-data`}
-                        onClick={() => sessionStorage.setItem('patientId', info.getValue().toString())}>
-                        <button className='btn btn-primary ms-3'>
-                            <i className='fa fa-pencil-square-o me-2'></i>
-                            Edit
-                        </button>
-                    </Link>
-                    <button className='btn btn-danger ms-3' 
-                    onClick={() => {
-                        sessionStorage.setItem('patientId', info.getValue().toString());
-                        setOpenDialog(true);
-                    }}>
-                        <i className='fa fa-trash me-2'></i>
-                        Delete
+                <Link to={`/patient/update-data`}
+                    className='d-flex justify-content-around align-items-center'
+                    onClick={() => sessionStorage.setItem('patientId', info.getValue().toString())}>
+                    <button className='btn btn-primary ms-3'>
+                        <i className='fa fa-pencil-square-o me-2'></i>
+                        Edit
                     </button>
-                </div>
+                </Link>
             ),
-            header: () => 'Actions'
+            header: () => 'Action'
         })
     ];
 
@@ -144,34 +142,6 @@ export const Home = () => {
             pagination,
         },
     });
-
-    const handleDelete = async (e: any) => {
-        e.preventDefault();
-        setLoading(true);
-
-        const id = sessionStorage.getItem('patientId');
-
-        axios.delete(`${baseUrl}/patients/delete/${id}`)
-            .then((res) => {
-                sessionStorage.setItem('patientId', '');
-                setOpen(true);
-                setOpenDialog(false);
-                setLoading(false);
-                window.location.reload();
-            })
-            .catch((err) => {
-                sessionStorage.setItem('patientId', '');
-                setLoading(false);
-                setOpenDialog(false);
-                console.log(err);
-            });
-    }
-
-    const action = (
-        <Button size="small" color="inherit" variant="outlined" onClick={() => setOpen(false)}>
-            Ok!
-        </Button>
-    );
 
     return (
         <div className="home">
@@ -294,42 +264,22 @@ export const Home = () => {
                 </select>
             </div>
             <Snackbar
-                open={open}
+                open={openUpdtSnackbar}
                 anchorOrigin={{ 
                     vertical: 'top',
                     horizontal: 'center'
                 }}
                 autoHideDuration={3000}
+                onClose={() => setOpenUpdt(false)}
             >
                 <Alert
                     severity="success"
                     variant="filled"
                     sx={{ width: '100%' }}
-                    action={action}
                 >
-                Berhasil menghapus data pasien tesebut!
+                Berhasil mengupdate data pasien!
                 </Alert>
             </Snackbar>
-            <Dialog
-                open={openDialog}
-                onClose={() => {setOpenDialog(false)}}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description">
-                <DialogTitle id="alert-dialog-title">
-                    {"Perhatian!"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Apakah Anda yakin ingin menghapus data pasien tersebut?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {setOpenDialog(false)}}>Cancel</Button>
-                    <Button onClick={handleDelete} autoFocus>
-                        Ya
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </div>
     )
 }

@@ -11,6 +11,7 @@ import {
 import { Table as BsTable } from 'react-bootstrap';
 import "./patient_health_record.scss";
 import { baseUrl } from '../../../../../core/config';
+import { Alert, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
 
 type Record = {
     id: number
@@ -27,6 +28,8 @@ type Record = {
 export const PatientHealthRecord = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [openDel, setOpenDel] = useState(false);
     const { id } = useParams();
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
@@ -45,6 +48,7 @@ export const PatientHealthRecord = () => {
             });
         
         sessionStorage.setItem('scores', JSON.stringify(''));
+        sessionStorage.setItem('isRecordUpdated', '');
     }, []);
 
     const handleAddVsign = () => {
@@ -109,14 +113,43 @@ export const PatientHealthRecord = () => {
         columnHelper.accessor(row => row.id, {
             id: 'id',
             cell: info => (
-                <Link to={`/patient/ews/result`}>
+                <Link to={`/patient/ews/result`} className='d-flex align-items-center'>
                     <button className='btn btn-success ms-3' onClick={handleToResult} value={info.getValue()}>
+                        <i className='fa fa-eye me-2'></i>
                         Lihat
                     </button>
                 </Link>
             ),
+            size: 100,
             header: () => 'Skor EWS',
         }),
+        columnHelper.accessor(row => row.id, {
+            id: 'action',
+            cell: info => (
+                <div className='d-flex justify-content-around align-items-center'>
+                    <Link to={`/patient/records/update`}
+                        onClick={() => {
+                            sessionStorage.setItem('recordId', info.getValue().toString());
+                            sessionStorage.setItem('patientId', id!!);
+                    }}>
+                        <button className='btn btn-primary ms-3'>
+                            <i className='fa fa-pencil-square-o me-2'></i>
+                            Edit
+                        </button>
+                    </Link>
+                    <button className='btn btn-danger ms-3' 
+                    onClick={() => {
+                        sessionStorage.setItem('recordId', info.getValue().toString());
+                        setOpenDialog(true);
+                    }}>
+                        <i className='fa fa-trash me-2'></i>
+                        Delete
+                    </button>
+                </div>
+            ),
+            size: 180,
+            header: () => 'Actions'
+        })
     ];
 
     const table = useReactTable({
@@ -129,6 +162,33 @@ export const PatientHealthRecord = () => {
             pagination,
         },
     });
+
+    const handleDelete = async (e: any) => {
+        e.preventDefault();
+        setLoading(true);
+
+        const id = sessionStorage.getItem('recordId');
+
+        axios.delete(`${baseUrl}/patients/vsign/delete/${id}`)
+            .then((res) => {
+                sessionStorage.setItem('recordId', '');
+                setOpenDel(true);
+                setOpenDialog(false);
+                setLoading(false);
+            })
+            .catch((err) => {
+                sessionStorage.setItem('recordId', '');
+                setLoading(false);
+                setOpenDialog(false);
+                console.log(err);
+            });
+    }
+
+    const action = (
+        <Button size="small" color="inherit" variant="outlined" onClick={() => setOpenDel(false)}>
+            Ok
+        </Button>
+    );
 
     return (
         <div className="home">
@@ -189,27 +249,29 @@ export const PatientHealthRecord = () => {
                                 display: 'grid',
                             }}
                         >
-                            {table.getRowModel().rows.map(row => (
-                                <tr 
-                                    key={row.id}
-                                    style={{
-                                        display: 'flex',
-                                        width: '100%',
-                                    }}
-                                >
-                                    {row.getVisibleCells().map(cell => (
-                                        <td 
-                                            key={cell.id}
-                                            style={{
-                                                display: 'flex',
-                                                width: cell.column.getSize(),
-                                            }}
-                                        >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
+                            {data.length == 0 
+                                ? <h1><strong>Pasien tersebut belum memiliki riwayat kesehatan.</strong></h1>
+                                : table.getRowModel().rows.map(row => (
+                                    <tr 
+                                        key={row.id}
+                                        style={{
+                                            display: 'flex',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        {row.getVisibleCells().map(cell => (
+                                            <td 
+                                                key={cell.id}
+                                                style={{
+                                                    display: 'flex',
+                                                    width: cell.column.getSize(),
+                                                }}
+                                            >
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
                         </tbody>
                     </BsTable>}
                     <div className='d-flex justify-content-center align-items-center mb-3'>
@@ -270,6 +332,43 @@ export const PatientHealthRecord = () => {
                     ))}
                 </select>
             </div>
+            <Dialog
+                open={openDialog}
+                onClose={() => {setOpenDialog(false)}}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-title">
+                    {"Perhatian!"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <strong>Apakah Anda yakin ingin menghapus data tanda vital tersebut?</strong>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {setOpenDialog(false)}}>Cancel</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Ya
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Snackbar
+                open={openDel}
+                anchorOrigin={{ 
+                    vertical: 'top',
+                    horizontal: 'center'
+                }}
+                autoHideDuration={3000}
+            >
+                <Alert
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                    action={action}
+                >
+                Berhasil menghapus data tanda vital tesebut!
+                </Alert>
+            </Snackbar>
         </div>
     )
 }
