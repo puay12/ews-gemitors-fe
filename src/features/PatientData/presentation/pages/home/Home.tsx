@@ -35,15 +35,7 @@ export const Home = () => {
     });
 
     useEffect(() => {
-        axios.get(`${baseUrl}/patients/`)
-            .then((res) => {
-                setData(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+        getAllPatients();
 
         if((sessionStorage.getItem('isPatientUpdated') != '') &&
             (sessionStorage.getItem('isPatientUpdated') != null)) {
@@ -142,6 +134,18 @@ export const Home = () => {
             pagination,
         },
     });
+
+    function getAllPatients() {
+        axios.get(`${baseUrl}/patients/`)
+            .then((res) => {
+                setData(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    }
 
     return (
         <div className="home">

@@ -32,11 +32,7 @@ export const UpdateRecord = () => {
     });
 
     useEffect(() => {
-        axios.get(`${baseUrl}/patients/vsign/${recordId}`)
-            .then((res) => {
-                setInitialData(res.data);
-            })
-            .catch((err) => console.log(err));
+        getRecord();
     });
 
     const handleInput = (e:any) => {
@@ -102,6 +98,14 @@ export const UpdateRecord = () => {
             })
             .catch((err) => console.log(err));
     };
+
+    function getRecord() {
+        axios.get(`${baseUrl}/patients/vsign/${recordId}`)
+            .then((res) => {
+                setInitialData(res.data);
+            })
+            .catch((err) => console.log(err));
+    }
 
     return (
         <div className="update_record">

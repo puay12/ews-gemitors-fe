@@ -5,7 +5,7 @@ import "./ews_result.scss";
 import { baseUrl } from "../../../../../core/config";
 import { Alert, Snackbar, Button } from "@mui/material";
 
-interface Score {
+type Score = {
     id: number
     record_id: number
     heart_score: string
@@ -19,8 +19,18 @@ interface Score {
     updated_at: string
 }
 
+type Protocol = {
+    id: number
+    threshold: string
+    level: string
+    category: string
+    frequency: string
+    protocol_list: string
+}
+
 export const EWSResult = () => {
     const [data, setData] = useState<Score[]>([]);
+    const [protocol, setProtocol] = useState<Protocol>();
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const [openUpdt, setOpenUpdt] = useState(false);
@@ -32,16 +42,10 @@ export const EWSResult = () => {
     const scores = JSON.parse(sessionStorage.getItem('scores')!) ?? JSON.stringify('');
 
     useEffect(() => {
-        if (scores != '') {
+        if(scores != '') {
             setData([scores]);
         } else {
-            axios.get(`${baseUrl}/patients/score/detail/${recordId}`)
-                .then((res) => {
-                    setData(res.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            getEWSResult();
         }
 
         setLoading(false);
@@ -57,6 +61,14 @@ export const EWSResult = () => {
             sessionStorage.setItem('isScoreUpdated', '');
         }
     }, []);
+
+    useEffect(() => {
+        if(data != null) {
+            const score = data.map((obj) => {return obj.ews_score}).pop();
+
+            getProtocol(score!);
+        }
+    }, [data])
 
     const handleOnClick = async (e:any) => {
         e.preventDefault();
@@ -92,6 +104,26 @@ export const EWSResult = () => {
         </Link>
     );
 
+    function getEWSResult() {
+        axios.get(`${baseUrl}/patients/score/detail/${recordId}`)
+            .then((res) => {
+                setData(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    function getProtocol(score:string) {
+        axios.post(`${baseUrl}/protocol/get-recommendation/${score}`,)
+            .then((res) => {
+                setProtocol(res.data['data'][0]);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     return (
         <div className="p-3">
             <div className="ews-result">
@@ -116,25 +148,27 @@ export const EWSResult = () => {
                     <div className="info">
                         <span className="info-item">Level Risiko</span>
                         <span className="semicolon">:</span>
-                        <span className="info-value">Medium</span>
+                        <span className="info-value">{protocol?.level}</span>
                     </div>
                     <div className="info">
                         <span className="info-item">Kode Protokol</span>
                         <span className="semicolon">:</span>
-                        <span className="info-value">Urgent</span>
+                        <span className="info-value">{protocol?.category}</span>
                     </div>
                     <div className="info">
                         <span className="info-item">Frekuensi Monitoring</span>
                         <span className="semicolon">:</span>
-                        <span className="info-value">Min. setiap 1 jam</span>
+                        <span className="info-value">{protocol?.frequency}</span>
                     </div>
                     <div className="info">
                         <span className="info-item">Protokol</span>
                         <span className="semicolon">:</span>
                         <ol className="info-value">
-                            <li>Perawat yang sedang memantau pasien harus segera mengabari staf medis lainnya.</li>
-                            <li>Perawat yang sedang memantau meminta penanganan medis darurat kepada dokter spesialis.</li>
-                            <li>Memindahkan pasien ke ruangan dengan fasilitas monitoring yang lengkap.</li>
+                            {
+                                protocol?.protocol_list.split("\\n").map((obj) => {
+                                    return <li>{obj}</li>
+                                })
+                            }
                         </ol>
                     </div>
                 </div>

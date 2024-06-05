@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
     createColumnHelper,
     flexRender,
@@ -31,21 +31,14 @@ export const PatientHealthRecord = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openDel, setOpenDel] = useState(false);
     const { id } = useParams();
+    const navigate = useNavigate();
     const [pagination, setPagination] = useState({
         pageIndex: 0, //initial page index
         pageSize: 10, //default page size
     });
 
     useEffect(() => {
-        axios.get(`${baseUrl}/patients/vsign/all/${id}`)
-            .then((res) => {
-                setData(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+        getPatientRecords();
         
         sessionStorage.setItem('scores', JSON.stringify(''));
         sessionStorage.setItem('isRecordUpdated', '');
@@ -169,12 +162,13 @@ export const PatientHealthRecord = () => {
 
         const id = sessionStorage.getItem('recordId');
 
-        axios.delete(`${baseUrl}/patients/vsign/delete/${id}`)
-            .then((res) => {
+        await axios.delete(`${baseUrl}/patients/vsign/delete/${id}`)
+            .then(async (res) => {
                 sessionStorage.setItem('recordId', '');
                 setOpenDel(true);
                 setOpenDialog(false);
                 setLoading(false);
+                await getPatientRecords();
             })
             .catch((err) => {
                 sessionStorage.setItem('recordId', '');
@@ -189,6 +183,18 @@ export const PatientHealthRecord = () => {
             Ok
         </Button>
     );
+
+    function getPatientRecords() {
+        axios.get(`${baseUrl}/patients/vsign/all/${id}`)
+            .then((res) => {
+                setData(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    }
 
     return (
         <div className="home">

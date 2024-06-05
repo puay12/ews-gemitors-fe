@@ -47,9 +47,16 @@ export const AddRecord = () => {
             .catch((err) => console.log(err));
     };
 
+    const action = (
+        <Link to='/patient/ews/result'>
+            <Button size="small" color="inherit" variant="outlined">
+                Lihat Skor
+            </Button>
+        </Link>
+    );
+
     async function handleCalculateEWS(e:any) {
         e.preventDefault();
-        setLoading(true);
 
         axios.post(`${baseUrlEWS}/getEWSScore`, {
             heart_rate: data.heart_rate,
@@ -65,14 +72,6 @@ export const AddRecord = () => {
             })
             .catch((err) => console.log(err));
     };
-
-    const action = (
-        <Link to='/patient/ews/result'>
-            <Button size="small" color="inherit" variant="outlined">
-                Lihat Skor
-            </Button>
-        </Link>
-    );
 
     return (
         <div className="add_record">

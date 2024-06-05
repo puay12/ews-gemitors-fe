@@ -33,15 +33,7 @@ export const ProtocolLists = () => {
     });
 
     useEffect(() => {
-        axios.get(`${baseUrl}/protocol/all`)
-            .then((res) => {
-                setData(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+        getProtocols();
     }, []);
 
     function TextWithLineBreaks(props:any) {
@@ -103,6 +95,18 @@ export const ProtocolLists = () => {
             pagination,
         },
     });
+
+    function getProtocols() {
+        axios.get(`${baseUrl}/protocol/all`)
+            .then((res) => {
+                setData(res.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+    }
 
     return (
         <div className="protocols">

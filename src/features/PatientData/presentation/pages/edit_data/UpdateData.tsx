@@ -28,11 +28,7 @@ export const UpdateData = () => {
     });
 
     useEffect(() => {
-        axios.get(`${baseUrl}/patients/${patientId}`)
-            .then((res) => {
-                setInitialData(res.data);
-            })
-            .catch((err) => console.log(err));
+        getPatient();
     });
 
     const handleInput = (e:any) => {
@@ -50,6 +46,14 @@ export const UpdateData = () => {
                 sessionStorage.setItem('patientId', '');
                 sessionStorage.setItem('isPatientUpdated', 'true');
                 navigate('/');
+            })
+            .catch((err) => console.log(err));
+    }
+
+    function getPatient() {
+        axios.get(`${baseUrl}/patients/${patientId}`)
+            .then((res) => {
+                setInitialData(res.data);
             })
             .catch((err) => console.log(err));
     }
