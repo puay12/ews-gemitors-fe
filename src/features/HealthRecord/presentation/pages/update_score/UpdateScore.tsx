@@ -80,9 +80,9 @@ export const UpdateScore = () => {
                             onChange={handleInput} defaultValue={scores.respiratory_score}
                             placeholder="Gunakan tanda titik untuk menandakan bilangan desimal"/>
                         </Form.Group>
-                        <Form.Group className="mb-4" controlId="systolic_blood_score">
+                        <Form.Group className="mb-4" controlId="sys_score">
                             <Form.Label className="label">Skor Tekanan Darah Sistolik</Form.Label>
-                            <Form.Control type="number" step="0.01" name="systolic_blood_score" 
+                            <Form.Control type="number" step="0.01" name="sys_score" 
                             onChange={handleInput} defaultValue={scores.sys_score} 
                             placeholder="Gunakan tanda titik untuk menandakan bilangan desimal" />
                         </Form.Group>
