@@ -21,27 +21,108 @@ a {
 }
 
 .sidebar-container{
-  width: 230px;
+  position: absolute;
+  top: 0;
+  left: -17vw;
+  width: 17vw;
   height: 100%;
   background-color: $secondary-bg;
-  position: fixed;
-  overflow: auto;
+  transition: left 0.3s ease-in-out;
+  z-index: 1;
 }
 
-.content-container{
+.sidebar-open {
+  left: 0;
+}
+
+.btn-toggler {
+  position: absolute;
+  top: 2%;
+  left: 1vw;
+  visibility: hidden;
+  background-color: $primary;
+  transition: left 0.3s ease-in-out;
+  z-index: 1;
+
+  .fa {
+    color: white;
+    font-size: 16px;
+  }
+
+  &:hover {
+    background-color: #168d56;
+  }
+}
+
+.btn-open {
+  visibility: visible;
+  left: 18vw;
+}
+
+.content-container {
   width: 100%;
-  margin-left: 230px;
+}
+
+.content-open {
+  margin-left: 17vw;
+}
+
+@media screen and (max-width: 920px) {
+  .sidebar-container {
+    width: 24vw;
+  }
+
+  .content-container {
+    margin-left: 24vw;
+  }
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 820px) {
   .sidebar-container {
-    width: 50%;
-    height: auto;
-    position: relative;
+    left: 0;
+    width: 24vw;
   }
 
-  div.content-container{
+  .sidebar-open {
+    left: -24vw;
+  }
+
+  .content-open {
     margin-left: 0;
+  }
+
+  .btn-toggler {
+    visibility: visible;
+    left: 2vw;
+  }
+
+  .btn-open {
+    left: 26vw;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .sidebar-container {
+    left: 0;
+    width: 100%;
+  }
+
+  .sidebar-open {
+    left: -100vw;
+  }
+
+  .content-open {
+    margin-left: 0;
+  }
+
+  .btn-toggler {
+    visibility: visible;
+    left: 3.5vw;
+  }
+
+  .btn-open {
+    right: 3.5vw;
+    left: 87%;
   }
 }

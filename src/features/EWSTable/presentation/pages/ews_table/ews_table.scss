@@ -26,3 +26,55 @@
         }
     }
 }
+
+@media screen and (max-width: 853px) {
+    div.ews-table {
+        .title {
+            font-size: 18px;
+        }
+
+        .footer-sticker {
+            left: 10%;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    div.ews-table {
+        .title {
+            font-size: 16px;
+        }
+
+        .footer-sticker {
+            left: 10%;
+
+            img {
+                height: 30px;
+            }
+        }
+    }
+}
+
+@media screen and (max-height: 1200px) {
+    div.ews-table {
+        .footer-sticker {
+            bottom: 30%;
+        }
+    }
+}
+
+@media screen and (max-height: 920px) {
+    div.ews-table {
+        .footer-sticker {
+            bottom: 25%;
+        }
+    }
+}
+
+@media screen and (max-height: 670px) {
+    div.ews-table {
+        .footer-sticker {
+            bottom: 15%;
+        }
+    }
+}

@@ -94,9 +94,19 @@
         font-size: 14px;
     }
 
+    .detail-score-small {
+        display: none;
+    }
+
     .score-total{
         font-weight: $bold;
         font-size: 16px;
+    }
+
+    .score-total-small {
+        font-weight: $bold;
+        font-size: 16px;
+        display: none;
     }
 
     hr{
@@ -137,6 +147,69 @@
 
         &:active{
             box-shadow: 2px 3px $light-gray;
+        }
+    }
+}
+
+@media screen and (max-width: 853px) {
+    div.ews-result {
+        .title {
+            font-size: 18px;
+        }
+
+        .score {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    div.result-detail {
+        .title {
+            font-size: 18px;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    div.ews-result {
+        .title {
+            font-size: 16px;
+        }
+
+        .score {
+            width: 100px;
+            height: 100px;
+            font-size: 40px;
+        }
+    }
+
+    div.result-detail {
+        .title {
+            font-size: 16px;
+        }
+
+        .formula {
+            width: 100%;
+        }
+
+        .detail-score {
+            display: none;
+        }
+
+        .detail-score-small {
+            display: block;
+        }
+
+        hr {
+            width: 80%;
+        }
+
+        .score-total {
+            display: none;
+        }
+
+        .score-total-small {
+            display: block;
         }
     }
 }

@@ -1,9 +1,9 @@
 @import "../../../../../core/styles/variables.scss";
 
-.home{
+.home {
     overflow-x: scroll;
 
-    .title{
+    .title {
         font-size: 20px;
         font-weight: $bold;
     }
@@ -75,6 +75,32 @@
             vertical-align: middle;
             &:hover{
                 cursor: pointer;
+            }
+        }
+    }
+
+    .table-controller {
+        overflow-x: scroll;
+    }
+}
+
+@media screen and (max-width: 853px) {
+    div.home {
+        .title {
+            font-size: 18px;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    div.home {
+        .title {
+            font-size: 16px;
+        }
+
+        .panels {
+            .search {
+                width: 50%;
             }
         }
     }

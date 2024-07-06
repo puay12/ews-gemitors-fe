@@ -37,3 +37,41 @@
         }
     }
 }
+
+@media screen and (max-width: 920px) {
+    div.update_record {
+        .title {
+            font-size: 18px;
+        }
+
+        .btn-success {
+            width: 30%;
+            -ms-transform: translate(-20%);
+            transform: translate(-20%); 
+        }
+    }
+}
+
+@media screen and (max-width: 820px) {
+    div.update_record {
+        .btn-success {
+            width: 40%;
+            -ms-transform: translate(-50%);
+            transform: translate(-50%); 
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    div.update_record {
+        .title {
+            font-size: 16px;
+        }
+
+        .btn-success {
+            width: 60%;
+            -ms-transform: translate(-50%);
+            transform: translate(-50%); 
+        }
+    }
+}

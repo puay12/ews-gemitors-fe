@@ -229,6 +229,54 @@ export const EWSResult = () => {
                         </div>
                     </div>
                 </div>
+                {/* if the device is a phone */}
+                <div className="row detail-score-small">
+                    <div className="col">
+                        <div>Detak Jantung : 
+                            <strong className="ms-3">
+                                {loading 
+                                    ? '...'
+                                    : data.map((obj) => {return obj.heart_score})}
+                            </strong>
+                        </div>
+                        <div>Laju Pernapasan : 
+                            <strong className="ms-3">
+                                {loading 
+                                    ? '...'
+                                    : data.map((obj) => {return obj.respiratory_score})}
+                            </strong>
+                        </div>
+                        <div>Saturasi Oksigen : 
+                            <strong className="ms-3">
+                                {loading 
+                                    ? '...'
+                                    : data.map((obj) => {return obj.spo2_score})}
+                            </strong>
+                        </div>
+                        <div>Tekanan Darah Sistolik : 
+                            <strong className="ms-3">
+                                {loading 
+                                    ? '...'
+                                    : data.map((obj) => {return obj.sys_score})}
+                            </strong>
+                        </div>
+                        <div>Tekanan Darah Diastolik : 
+                            <strong className="ms-3">
+                                {loading 
+                                    ? '...'
+                                    : data.map((obj) => {return obj.dias_score})}
+                            </strong>
+                        </div>
+                        <div>Suhu Tubuh : 
+                            <strong className="ms-3">
+                                {loading 
+                                    ? '...'
+                                    : data.map((obj) => {return obj.temp_score})}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+                {/* ----------- */}
                 <div className="d-flex align-items-center">
                     <hr />
                     <span className="ms-3 plus">+</span>
@@ -240,6 +288,17 @@ export const EWSResult = () => {
                     {loading 
                                 ? '...'
                                 : data.map((obj) => {return obj.ews_score})}
+                    </div>
+                </div>
+                {/* ----------- */}
+                {/* if the device is a phone */}
+                <div className="row score-total-small">
+                    <div className="col">Total Skor EWS :
+                        <strong className="ms-3">
+                            {loading 
+                                ? '...'
+                                : data.map((obj) => {return obj.ews_score})}
+                        </strong>
                     </div>
                 </div>
             </div>
