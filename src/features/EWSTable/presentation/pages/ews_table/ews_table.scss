@@ -35,7 +35,7 @@
         }
 
         .footer-sticker {
-            left: 10%;
+            display: none;
         }
     }
 }
@@ -47,33 +47,7 @@
         }
 
         .footer-sticker {
-            img {
-                height: 40px;
-            }
-        }
-    }
-}
-
-@media screen and (max-height: 1200px) {
-    div.ews-table {
-        .footer-sticker {
-            bottom: 30%;
-        }
-    }
-}
-
-@media screen and (max-height: 920px) {
-    div.ews-table {
-        .footer-sticker {
-            bottom: 25%;
-        }
-    }
-}
-
-@media screen and (max-height: 670px) {
-    div.ews-table {
-        .footer-sticker {
-            bottom: 15%;
+            display: none;
         }
     }
 }
