@@ -209,7 +209,7 @@ export const Home = () => {
                             ))}
                         </tbody>
                     </BsTable>}
-            <div className='table-controller d-flex justify-content-center align-items-center mb-3'>
+            <div className='table-controller mb-3'>
                 <div className='d-flex align-items-center gap-2'>
                     <button
                         className="btn btn-success p-2"

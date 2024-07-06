@@ -176,7 +176,7 @@ export const ProtocolLists = () => {
                         </tbody>
                     </BsTable>}
             </div>
-            <div className="table-controller d-flex align-items-center justify-content-center">
+            <div className="table-controller mb-3">
                 <div className='d-flex align-items-center gap-2'>
                     <button
                         className="btn btn-success p-2"

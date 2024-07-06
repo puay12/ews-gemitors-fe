@@ -27,7 +27,11 @@
     }
 
     .table-controller {
-        overflow-x: scroll;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5px;
     }
 }
 
@@ -43,6 +47,11 @@
     div.protocols {
         .title {
             font-size: 16px;
+        }
+
+        .table-controller {
+            flex-direction: column;
+            gap: 10px;
         }
     }
 }

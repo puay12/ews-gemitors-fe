@@ -78,7 +78,11 @@
     }
 
     .table-controller {
-        overflow-x: scroll;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5px;
     }
 }
 
@@ -100,6 +104,11 @@
             .search {
                 width: 50%;
             }
+        }
+
+        .table-controller {
+            flex-direction: column;
+            gap: 10px;
         }
     }
 }
