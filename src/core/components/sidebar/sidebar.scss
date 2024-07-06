@@ -76,15 +76,11 @@
             margin-left: 10px;
             font-weight: $bold;
         }
-    
-        hr{
-            color: $gray;
-            margin: 0;
-        }
     }
 
     .footer{
         background-color: $secondary-bg;
+        margin-top: 40%;
 
         span{
             font-size: 10px;
@@ -138,6 +134,7 @@
         }
 
         .footer {
+            margin-top: 25%;
             span {
                 font-size: 9px;
             }

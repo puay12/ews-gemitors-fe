@@ -6,7 +6,7 @@ export const Sidebar = () => {
         <div className="sidebar">
             <div className="item d-flex flex-column">
                 <div className="logo d-flex align-items-center justify-content-center">
-                    <img src="logo.png" alt=""/>
+                    <img src="/logo.png" alt=""/>
                     <span>EWS Gemitors</span>
                 </div>
                 <NavLink to="/" className={({ isActive }) => isActive ? "active" : "listItem"}>
@@ -29,23 +29,6 @@ export const Sidebar = () => {
                         <path d="M12 16H12.01" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                     <span className="listItemTitle">Daftar Protokol</span>
-                </NavLink>
-                <hr />
-                <NavLink to="/anu" className={({ isActive }) => isActive ? "active" : "listItem"}>
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9.09009 9.00001C9.32519 8.33167 9.78924 7.76811 10.4 7.40914C11.0108 7.05016 11.729 6.91894 12.4273 7.03872C13.1255 7.15849 13.7589 7.52153 14.2152 8.06353C14.6714 8.60554 14.9211 9.29153 14.9201 10C14.9201 12 11.9201 13 11.9201 13" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 17H12.01" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span className="listItemTitle">Bantuan</span>
-                </NavLink>
-                <NavLink to="/anu" className={({ isActive }) => isActive ? "active" : "listItem"}>
-                    <svg  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M16 17L21 12L16 7" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M21 12H9" stroke="#9D9D9D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span className="listItemTitle">Keluar</span>
                 </NavLink>
             </div>
             <div className="footer d-flex align-items-center justify-content-center">
