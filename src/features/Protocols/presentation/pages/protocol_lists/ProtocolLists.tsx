@@ -9,7 +9,6 @@ import {
     getPaginationRowModel, 
     useReactTable } from "@tanstack/react-table";
 import { Table as BsTable } from 'react-bootstrap';
-import { Link } from "react-router-dom";
 
 type Protocol = {
     id: number

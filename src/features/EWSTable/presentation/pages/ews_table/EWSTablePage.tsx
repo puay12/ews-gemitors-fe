@@ -1,4 +1,5 @@
-import "./ews_table.scss"
+import "./ews_table.scss";
+import { Table } from 'react-bootstrap';
 
 export const EWSTablePage = () => {
     return (
@@ -7,7 +8,7 @@ export const EWSTablePage = () => {
             <span>Tabel ini digunakan sebagai acuan untuk menghitung skor EWS seorang pasien dan menentukan protokol yang akan dijalankan.</span>
             {/* EWS TABLE */}
             <div className="vsign-table mt-4">
-                <table className="table table-hover table-striped table-bordered table-hover">
+                <Table striped bordered hover responsive size="sm">
                     <thead className="table-success">
                         <tr>
                             <th scope="col">Tanda Vital</th>
@@ -82,7 +83,7 @@ export const EWSTablePage = () => {
                             <td>99.53</td>
                         </tr>
                     </tbody>
-                </table>
+                </Table>
             </div>
             <div className="footer-sticker">
                 <img src="footer-sticker.svg" alt="" />
